@@ -17,7 +17,13 @@ class Manager{
     protected $events;
 
     protected $config;
-
+    
+    /**
+     * Manager constructor.
+     * @param Application $app
+     * @param Filesystem $files
+     * @param Dispatcher $events
+     */
     public function __construct(Application $app, Filesystem $files, Dispatcher $events)
     {
         $this->app = $app;
@@ -42,7 +48,11 @@ class Manager{
         $counter = 0;
         foreach($this->files->directories($this->app['path.lang']) as $langPath){
             $locale = basename($langPath);
-
+            
+            if(in_array($locale, $this->config['exclude_languages'])) {
+                continue;
+            }
+            
             foreach($this->files->allfiles($langPath) as $file) {
 
                 $info = pathinfo($file);
@@ -150,6 +160,10 @@ class Manager{
                     $translations = $groups[$group];
                     $path = $this->app['path.lang'].'/'.$locale.'/'.$group.'.php';
                     $output = "<?php\n\nreturn ".var_export($translations, true).";\n";
+                    $str = json_decode(str_replace(array('(',')'), array('&#40','&#41'), json_encode($translations)), true);
+                    $str = var_export($str, true);
+                    $str = str_replace(array('array (',')','&#40','&#41'), array('[',']','(',')'), $str);
+                    $output = "<?php\n\nreturn ".$str.";\n";
                     $this->files->put($path, $output);
                 }
             }

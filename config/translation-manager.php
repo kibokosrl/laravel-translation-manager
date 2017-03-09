@@ -11,8 +11,11 @@ return array(
     |
     */
     'route' => [
-        'prefix' => 'translations',
-        'middleware' => 'auth',
+        'prefix' => 'admin/traduzioni',
+        'middleware' => [
+            'web',
+            'auth',
+        ],
     ],
 
 	/**
@@ -21,6 +24,11 @@ return array(
 	 * @type boolean
 	 */
 	'delete_enabled' => true,
+    
+    /**
+	 * Enable adding translations
+	 */
+	'add_enabled' => true,
 
 	/**
 	 * Exclude specific groups from Laravel Translation Manager. 
@@ -32,10 +40,24 @@ return array(
 	 *		'pagination',
 	 *		'reminders',
 	 *		'validation',
+     *      'package::main'
 	 *	)
 	 */
 	'exclude_groups' => array(),
-
+	
+    /**
+	 * Exclude specific language.
+	 *
+	 * @type array
+	 *
+	 * 	array(
+	 *		'vendor',
+	 *	)
+	 */
+	'exclude_languages' => array(
+	    'vendor'
+	),
+    
 	/**
 	 * Export translations with keys output alphabetically.
 	 */
