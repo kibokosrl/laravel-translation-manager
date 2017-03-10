@@ -104,7 +104,7 @@ class Controller extends BaseController
             ]);
     
             if($translate == 'auto') {
-                $tr = new TranslateClient('en', $locale);
+                $tr = new TranslateClient('it', $locale);
                 $value = $tr->translate($value);
                 $value = preg_replace('#\[__(.+?)__\]#i', ':$1', $value);
             }
